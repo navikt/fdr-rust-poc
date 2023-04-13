@@ -12,7 +12,9 @@
     flake-utils.url = "github:numtide/flake-utils";
     nixpkgs.url = "github:NixOS/nixpkgs";
     rust-overlay = {
-      url = "github:oxalica/rust-overlay";
+      # TODO: Replace when https://github.com/oxalica/rust-overlay/pull/122 is merged
+      url = "github:amjoseph-nixpkgs/rust-overlay";
+      # url = "github:oxalica/rust-overlay";
       inputs = {
         nixpkgs.follows = "nixpkgs";
         flake-utils.follows = "flake-utils";
