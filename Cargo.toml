@@ -12,8 +12,8 @@ clap_complete_command = "0.4.0"
 color-eyre = "0.6.2"
 log = "0.4.17"
 rocket = "0.5.0-rc.3"
-sqlx = {version ="0.6.3", features= ["runtime-tokio-native-tls"]} # Windows only, see https://github.com/navikt/fdr-rust-poc/issues/1
-# sqlx = { version = "0.6.3", features = ["runtime-tokio-rustls"] } # Non-windows only, for now. See above issue.
+# sqlx = {version ="0.6.3", features= ["runtime-tokio-native-tls"]} # Windows only, see https://github.com/navikt/fdr-rust-poc/issues/1
+sqlx = { version = "0.6.3", features = ["runtime-tokio-rustls"] } # Non-windows only, for now. See above issue.
 tokio = { version = "1.23.0", features = ["macros", "rt-multi-thread"] }
 tracing = "0.1.37"
 tracing-subscriber = { version = "0.3.16", features = ["json"] }
