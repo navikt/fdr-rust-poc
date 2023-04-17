@@ -8,7 +8,6 @@ edition = "2021"
 [dependencies]
 clap = { version = "4.0.29", features = ["derive", "deprecated", "unstable-v5", "wrap_help", "unicode"] }
 clap-verbosity-flag = "2.0.0"
-clap_complete_command = "0.4.0"
 color-eyre = "0.6.2"
 log = "0.4.17"
 rocket = "0.5.0-rc.3"
