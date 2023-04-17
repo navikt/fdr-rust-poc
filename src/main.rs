@@ -1,19 +1,30 @@
 use color_eyre::eyre::Result;
-use tracing::{info, trace};
+use rocket::{get, routes};
+use tracing::{debug, info, trace};
 
 mod cli;
 
-async fn yello() -> String {
-	String::from("Yello!")
+#[get("/")]
+async fn root_index() -> &'static str {
+	"Hello, world!\n"
 }
 
-#[tokio::main]
+#[get("/greet/<subject>")]
+async fn greet(subject: &str) -> String {
+	format!("Hello, {subject}!\n")
+}
+
+#[rocket::main]
 async fn main() -> Result<()> {
 	color_eyre::install()?;
 	let cli = cli::get_cli_args()?;
 	trace!("{:#?}", &cli);
 
-	let yo = yello().await;
-	info!("{yo:#}");
+	debug!("Starting up rocket...");
+	let rocket_result = rocket::build()
+		.mount("/", routes![root_index, greet])
+		.launch()
+		.await?;
+	info!("Rocket has finished with result: {rocket_result:#?}");
 	Ok(())
 }
