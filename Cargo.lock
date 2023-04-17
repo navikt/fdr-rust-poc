@@ -3,22 +3,6 @@
 version = 3
 
 [[package]]
-name = "FellesDataRegistreRustPoC"
-version = "0.0.1"
-dependencies = [
- "clap",
- "clap-verbosity-flag",
- "clap_complete_command",
- "color-eyre",
- "log",
- "rocket",
- "sqlx",
- "tokio",
- "tracing",
- "tracing-subscriber",
-]
-
-[[package]]
 name = "addr2line"
 version = "0.19.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -518,6 +502,21 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "e51093e27b0797c359783294ca4f0a911c270184cb10f85783b118614a1501be"
 dependencies = [
  "instant",
+]
+
+[[package]]
+name = "felles-data-registre-rust-poc"
+version = "0.0.1"
+dependencies = [
+ "clap",
+ "clap-verbosity-flag",
+ "color-eyre",
+ "log",
+ "rocket",
+ "sqlx",
+ "tokio",
+ "tracing",
+ "tracing-subscriber",
 ]
 
 [[package]]
