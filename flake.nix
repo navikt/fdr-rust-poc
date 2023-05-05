@@ -96,9 +96,9 @@
         });
     in {
       checks = {
-        inherit
-          cargo-package
-          ;
+        # inherit # Comment in when you want tests to run on every new shell
+        #   cargo-package
+        #   ;
       };
       devShells.default = pkgs.mkShell {
         nativeBuildInputs =
@@ -118,7 +118,7 @@
           ++ [
             # Packages made in this flake
             rustToolchain
-            cargo-package
+            # cargo-package # Comment in when you want tests to run on every new shell
           ]
           ++ pkgs.lib.optionals (pkgs.stdenv.isLinux) (with pkgs; [cargo-watch]); # Currently broken on macOS
 
