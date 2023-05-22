@@ -10,7 +10,7 @@ clap = { version = "4.0.29", features = ["derive", "deprecated", "unstable-v5", 
 clap-verbosity-flag = "2.0.0"
 color-eyre = "0.6.2"
 log = "0.4.17"
-rocket = "0.5.0-rc.3"
+rocket = { version = "0.5.0-rc.3", features = ["json"] }
 # Comment in when in use, speeds up some compilation:
 # sqlx = { version = "0.6.3", features = ["runtime-tokio-rustls"] } # Non-windows only, for now. See above issue.
 tokio = { version = "1.23.0", features = ["macros", "rt-multi-thread"] }
