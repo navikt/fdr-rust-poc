@@ -118,6 +118,7 @@
 
             # Other tooling
             docker-compose
+            postgresql_15
           ])
           ++ [
             # Packages made in this flake
