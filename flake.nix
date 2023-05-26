@@ -103,6 +103,7 @@
       devShells.default = pkgs.mkShell {
         nativeBuildInputs =
           (with pkgs; [
+            # rust specific
             cargo-audit
             cargo-auditable
             cargo-cross
@@ -114,6 +115,9 @@
             helix
             lldb
             rust-analyzer
+
+            # Other tooling
+            docker-compose
           ])
           ++ [
             # Packages made in this flake
