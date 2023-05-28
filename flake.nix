@@ -117,6 +117,7 @@
             # Other tooling
             docker-compose
             postgresql_15
+            sqlx-cli
           ])
           ++ [
             # Packages made in this flake
