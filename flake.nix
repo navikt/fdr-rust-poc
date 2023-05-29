@@ -118,6 +118,7 @@
             docker-compose
             postgresql_15
             sqlx-cli
+            pgcli # Colorized syntax highlighted pgsql
           ])
           ++ [
             # Packages made in this flake
