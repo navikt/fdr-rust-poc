@@ -99,6 +99,7 @@
         #   ;
       };
       devShells.default = pkgs.mkShell {
+        RUSTFLAGS = "--cfg uuid_unstable";
         nativeBuildInputs =
           (with pkgs; [
             # rust specific

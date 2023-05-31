@@ -1,4 +1,4 @@
-use rocket::{get, routes, serde::json::Json};
+use rocket::{get, http::Status, post, routes, serde::json::Json};
 use rocket_db_pools::{sqlx::types::Uuid, Connection};
 use tracing::error;
 
@@ -56,6 +56,28 @@ async fn get(
 	}
 }
 
+#[post("/person/new")]
+async fn new(
+	mut db_connection: Connection<super::db::Db>,
+) -> Result<Json<Person>, (Status, String)> {
+	let new_person_uuid = Uuid::now_v7();
+	match sqlx::query_as!(
+		Person,
+		"INSERT INTO person (id) VALUES ($1) RETURNING id",
+		new_person_uuid,
+	)
+	.fetch_one(&mut **db_connection)
+	.await
+	{
+		Ok(p) => Ok(Json(p)),
+		Err(e) => {
+			let error_msg = format!("Unable to generate random new person: {}", e);
+			error!(error_msg);
+			Err((Status::InternalServerError, error_msg))
+		},
+	}
+}
+
 #[get("/person")]
 async fn list(mut db_connection: Connection<super::db::Db>) -> Json<Vec<Person>> {
 	match sqlx::query_as!(Person, "SELECT * FROM person")
@@ -72,6 +94,6 @@ async fn list(mut db_connection: Connection<super::db::Db>) -> Json<Vec<Person>>
 
 pub fn stage() -> rocket::fairing::AdHoc {
 	rocket::fairing::AdHoc::on_ignite("Person", |rocket| async {
-		rocket.mount("/", routes![get, list])
+		rocket.mount("/", routes![get, list, new])
 	})
 }
