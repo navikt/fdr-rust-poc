@@ -24,8 +24,7 @@ async fn offend(subject: &str) -> String {
 
 #[get("/insult2/<subject>")]
 async fn offend2(subject: &str) -> Json<dtos::DummyResponse> {
-	// let out = dtos::DummyResponse::new("my messsage", "my status");
-	let out = dtos::DummyResponse::new2(subject.to_owned(), String::from("my status"));
+	let out = dtos::DummyResponse::new(subject.to_owned(), String::from("my status"));
 	Json(out)
 }
 
