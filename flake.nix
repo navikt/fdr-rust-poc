@@ -33,6 +33,15 @@
         overlays = [(import rust-overlay)];
       };
 
+      code = pkgs.vscode-with-extensions.override {
+        vscode = pkgs.vscodium;
+        vscodeExtensions = with pkgs.vscode-extensions; [
+          rust-lang.rust-analyzer
+          vadimcn.vscode-lldb
+          bungcip.better-toml
+          bbenoist.nix
+        ];
+      };
       # Target musl when building on 64-bit linux
       buildTarget =
         {"x86_64-linux" = "x86_64-unknown-linux-musl";}.${system}
@@ -111,6 +120,7 @@
             rust-analyzer
 
             # Editor stuffs
+            code
             helix
             lldb
             rust-analyzer
