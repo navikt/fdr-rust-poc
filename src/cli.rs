@@ -4,7 +4,7 @@ use clap::{Args, Parser};
 use clap_verbosity_flag::{InfoLevel, Verbosity};
 use color_eyre::eyre::Result;
 
-use tracing_subscriber::prelude::*;
+use tracing_subscriber::{filter, prelude::*};
 
 #[derive(Debug, Parser)]
 pub struct Cli {
@@ -31,7 +31,6 @@ pub fn get_cli_args() -> Result<Cli> {
 	Ok(cli)
 }
 
-// TODO: Fix after incorporating automatic json/terminal detection
 /// Function to help convert log level from `clap-verbosity-flag` crate to `tracing_subscriber`
 const fn convert_filter(filter: log::LevelFilter) -> tracing_subscriber::filter::LevelFilter {
 	use tracing_subscriber::filter as trace;
@@ -48,21 +47,12 @@ const fn convert_filter(filter: log::LevelFilter) -> tracing_subscriber::filter:
 pub fn set_module_log_level<T: clap_verbosity_flag::LogLevel>(verbosity: &Verbosity<T>) {
 	use tracing_subscriber::fmt as fmt_layer;
 	let (json_logging, plain_logging) = match std::io::stdout().is_terminal() {
-		true => (
-			None,
-			Some(fmt_layer::layer()
-					// .with_max_level(convert_filter(verbosity.log_level_filter()))
-					.compact()),
-		),
-		false => (
-			Some(fmt_layer::layer()
-					// .with_max_level(convert_filter(verbosity.log_level_filter()))
-					.json()),
-			None,
-		),
+		true => (None, Some(fmt_layer::layer().compact())),
+		false => (Some(fmt_layer::layer().json()), None),
 	};
 	tracing_subscriber::Registry::default()
 		.with(json_logging)
 		.with(plain_logging)
+		.with(filter::Targets::new().with_default(convert_filter(verbosity.log_level_filter())))
 		.init();
 }
