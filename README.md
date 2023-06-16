@@ -2,17 +2,20 @@
 
 ## Purpose
 
-This PoC application is meant to evaluate claims a person may invoke on a given benefit.
+This is a PoC Rust-based NAIS application. 
+
+### Scenario
+Evaluate claims a person may invoke for a given benefit.
 Restrictions:
 - The person must be identified
 - The benefit claim might be re-evaluated at a later date
 
 
-## API
+## Scenario API
 
-Additionally, as  PoC, this application will offer API endpoints to permit:
+For this scenario, the application will offer API endpoints to permit:
 - An person to be created with 1..n identities
-- A benefit claim to be created
+- A benefit claim to be created (linked to a person)
 - A benefit claim's evaluation(s) to be fetched (including incomplete ones, if any)
 - An endpoint to manually "progress" a specific evaluation
 - A fully fleshed out evaluation when sufficient progress has been made (w/randomly generated content)
@@ -41,3 +44,15 @@ Also, in docker desktop: settings -> resources -> wsl-integration: make sure doc
 
 SQLx enables us to perform DB migrations at _run_time, even though it also helps us with a lot of magic at _compile_time.
 Thus it should be perfectly safe to just upload a docker-image to any relevant runtime-platform whence a migration is desired.
+
+## Goals
+
+- [x] Database migrations (at runtime)
+- [x] HTTP JSON API endpoints
+- [x] pgsql queries and transactions
+- [x] JSON/plaintext logging dependent on runtime environment
+- [ ] Authentication with OIDC
+- [ ] Feature flagging
+- [ ] Testing of API endpoints
+- [ ] Securelogs
+- [ ] Containerization via nix flake
