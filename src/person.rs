@@ -1,6 +1,9 @@
+use core::fmt;
+use std::collections::HashMap;
+
 use rocket::{get, http::Status, post, routes, serde::json::Json};
 use rocket_db_pools::{sqlx::types::Uuid, Connection};
-use tracing::error;
+use tracing::{error, info};
 
 mod struct_utils;
 
@@ -13,22 +16,37 @@ pub struct Person {
 	// created_at: time::OffsetDateTime,
 }
 
-// TODO: Comment back in when in use
-// #[derive(Debug, Clone, Serialize, Deserialize)]
-// #[serde(crate = "rocket::serde")]
-// pub enum IdentityType {
-// 	PassportId,
-// 	SocialSecurityNumber,
-// }
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Hash, Eq)]
+#[serde(crate = "rocket::serde", try_from = "String")]
+pub enum IdentityType {
+	PassportId,
+	SocialSecurityNumber,
+}
 
-// #[derive(Debug, Clone, Serialize, Deserialize)]
-// #[serde(crate = "rocket::serde")]
-// pub struct Identities {
-// 	id: Uuid,
-// 	id_type: IdentityType,
-// 	id_value: String,
-// 	person: Person,
-// }
+impl TryFrom<String> for IdentityType {
+    type Error = String;
+
+    fn try_from(value: String) -> Result<Self, Self::Error> {
+        todo!()
+    }
+}
+
+impl fmt::Display for IdentityType {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        todo!()
+    }
+}
+
+
+#[derive(Debug, Clone, Serialize, Deserialize)]
+#[serde(crate = "rocket::serde")]
+pub struct Identities {
+	id: Uuid,
+	id_type: IdentityType,
+	id_value: String,
+	person: Person,
+}
+
 
 #[get("/person/<id>")]
 async fn get(
@@ -54,6 +72,18 @@ async fn get(
 			None
 		},
 	}
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize)]
+#[serde(crate = "rocket::serde")]
+struct PersonReq{
+	identities: HashMap<IdentityType,String>
+}
+
+
+#[post("/person", data = "<req>")]
+fn new_person(req: Json<PersonReq<>>) { 
+	info!("debug test {:#?}", req.identities);
 }
 
 #[post("/person/new")]
@@ -94,6 +124,6 @@ async fn list(mut db_connection: Connection<super::db::Db>) -> Json<Vec<Person>>
 
 pub fn stage() -> rocket::fairing::AdHoc {
 	rocket::fairing::AdHoc::on_ignite("Person", |rocket| async {
-		rocket.mount("/", routes![get, list, new])
+		rocket.mount("/", routes![get, list, new, new_person])
 	})
 }
