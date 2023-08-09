@@ -35,11 +35,18 @@
 
       code = pkgs.vscode-with-extensions.override {
         vscode = pkgs.vscodium;
-        vscodeExtensions = with pkgs.vscode-extensions; [
+        vscodeExtensions = (with pkgs.vscode-extensions; [
           rust-lang.rust-analyzer
           vadimcn.vscode-lldb
           bungcip.better-toml
           bbenoist.nix
+        ]) ++ pkgs.vscode-utils.extensionsFromVscodeMarketplace [
+          {
+            name = "cargo-crate-completer";
+            publisher = "chenxuan";
+            version = "1.0.2";
+            sha256 = "Kfx1GgPJiTSLYZOSe5R8g1EiyHdptwdog2D221zjQIg=";
+          }
         ];
       };
       # Target musl when building on 64-bit linux
